@@ -2,6 +2,7 @@
 using App.Core.Services;
 using App.Core.UnitOfWork;
 using App.Repository;
+using App.Service.Services;
 using App.Repository.Repositories;
 using App.Repository.UnitOfWork;
 using App.Service.Mapping;
@@ -20,7 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(Service<>));
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
