@@ -6,6 +6,7 @@ using App.Repository.Repositories;
 using App.Repository.UnitOfWork;
 using App.Service.Mapping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +26,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), option =>
-    {
+    x.UseNpgsql(builder.Configuration.GetConnectionString("SqlConnection"), option => {
         option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
     });
 });
