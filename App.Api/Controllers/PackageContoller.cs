@@ -25,28 +25,28 @@ namespace App.API.Controllers
 		{
 			var all = await _service.GetAllAsync();
 			var m_all = _mapper.Map<List<PackageDto>>(all.ToList());
-            return CreateActionResult(CustomResponseDto<List<PackageDto>>.Success(m_all, 200));
+            return CreateActionResult(CustomResponseDto<List<PackageDto>>.Success(200,m_all));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(PackageDto PackageDto)
 		{
 			var Package = await _service.AddAsync(_mapper.Map<Package>(PackageDto));
-			return CreateActionResult(CustomResponseDto<PackageDto>.Success(_mapper.Map<PackageDto>(Package),200));
+			return CreateActionResult(CustomResponseDto<PackageDto>.Success(200,_mapper.Map<PackageDto>(Package)));
 		}
 
 		[HttpPost("[action]")]
 		public async Task<IActionResult> AddRange(List<PackageDto> PackageDtos)
 		{
 			var Packages = await _service.AddRangeAsync(_mapper.Map<List<Package>>(PackageDtos));
-            return CreateActionResult(CustomResponseDto<List<PackageDto>>.Success(_mapper.Map<List<PackageDto>>(Packages), 200));
+            return CreateActionResult(CustomResponseDto<List<PackageDto>>.Success(200,_mapper.Map<List<PackageDto>>(Packages)));
         }
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
 			var Package = await _service.GetByIdAsync(id);
-			return CreateActionResult(CustomResponseDto<PackageDto>.Success(_mapper.Map<PackageDto>(Package), 200));
+			return CreateActionResult(CustomResponseDto<PackageDto>.Success(200,_mapper.Map<PackageDto>(Package)));
 		}
 
 		[HttpPut]

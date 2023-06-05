@@ -25,28 +25,28 @@ namespace App.API.Controllers
 		{
 			var all = await _service.GetAllAsync();
 			var m_all = _mapper.Map<List<DeliveryPointDto>>(all.ToList());
-            return CreateActionResult(CustomResponseDto<List<DeliveryPointDto>>.Success(m_all, 200));
+            return CreateActionResult(CustomResponseDto<List<DeliveryPointDto>>.Success(200,m_all));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(DeliveryPointDto DeliveryPointDto)
 		{
 			var DeliveryPoint = await _service.AddAsync(_mapper.Map<DeliveryPoint>(DeliveryPointDto));
-			return CreateActionResult(CustomResponseDto<DeliveryPointDto>.Success(_mapper.Map<DeliveryPointDto>(DeliveryPoint),200));
+			return CreateActionResult(CustomResponseDto<DeliveryPointDto>.Success(200, _mapper.Map<DeliveryPointDto>(DeliveryPoint)));
 		}
 
 		[HttpPost("[action]")]
 		public async Task<IActionResult> AddRange(List<DeliveryPointDto> DeliveryPointDtos)
 		{
 			var DeliveryPoints = await _service.AddRangeAsync(_mapper.Map<List<DeliveryPoint>>(DeliveryPointDtos));
-            return CreateActionResult(CustomResponseDto<List<DeliveryPointDto>>.Success(_mapper.Map<List<DeliveryPointDto>>(DeliveryPoints), 200));
+            return CreateActionResult(CustomResponseDto<List<DeliveryPointDto>>.Success(200, _mapper.Map<List<DeliveryPointDto>>(DeliveryPoints)));
         }
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
 			var DeliveryPoint = await _service.GetByIdAsync(id);
-			return CreateActionResult(CustomResponseDto<DeliveryPointDto>.Success(_mapper.Map<DeliveryPointDto>(DeliveryPoint), 200));
+			return CreateActionResult(CustomResponseDto<DeliveryPointDto>.Success(200, _mapper.Map<DeliveryPointDto>(DeliveryPoint)));
 		}
 
 		[HttpPut]

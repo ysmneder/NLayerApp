@@ -25,28 +25,28 @@ namespace App.API.Controllers
 		{
 			var all = await _service.GetAllAsync();
 			var m_all = _mapper.Map<List<BagDto>>(all.ToList());
-            return CreateActionResult(CustomResponseDto<List<BagDto>>.Success(m_all, 200));
+            return CreateActionResult(CustomResponseDto<List<BagDto>>.Success(200,m_all));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(BagDto BagDto)
 		{
 			var Bag = await _service.AddAsync(_mapper.Map<Bag>(BagDto));
-			return CreateActionResult(CustomResponseDto<BagDto>.Success(_mapper.Map<BagDto>(Bag),200));
+			return CreateActionResult(CustomResponseDto<BagDto>.Success(200,_mapper.Map<BagDto>(Bag)));
 		}
 
 		[HttpPost("[action]")]
 		public async Task<IActionResult> AddRange(List<BagDto> BagDtos)
 		{
 			var Bags = await _service.AddRangeAsync(_mapper.Map<List<Bag>>(BagDtos));
-            return CreateActionResult(CustomResponseDto<List<BagDto>>.Success(_mapper.Map<List<BagDto>>(Bags), 200));
+            return CreateActionResult(CustomResponseDto<List<BagDto>>.Success(200,_mapper.Map<List<BagDto>>(Bags)));
         }
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
 			var Bag = await _service.GetByIdAsync(id);
-			return CreateActionResult(CustomResponseDto<BagDto>.Success(_mapper.Map<BagDto>(Bag), 200));
+			return CreateActionResult(CustomResponseDto<BagDto>.Success(200,_mapper.Map<BagDto>(Bag)));
 		}
 
 		[HttpPut]

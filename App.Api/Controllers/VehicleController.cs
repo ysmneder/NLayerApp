@@ -25,28 +25,28 @@ namespace App.API.Controllers
 		{
 			var all = await _service.GetAllAsync();
 			var m_all = _mapper.Map<List<VehicleDto>>(all.ToList());
-            return CreateActionResult(CustomResponseDto<List<VehicleDto>>.Success(m_all, 200));
+            return CreateActionResult(CustomResponseDto<List<VehicleDto>>.Success(200, m_all));
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Add(VehicleDto vehicleDto)
 		{
 			var vehicle = await _service.AddAsync(_mapper.Map<Vehicle>(vehicleDto));
-			return CreateActionResult(CustomResponseDto<VehicleDto>.Success(_mapper.Map<VehicleDto>(vehicle),200));
+			return CreateActionResult(CustomResponseDto<VehicleDto>.Success(200, _mapper.Map<VehicleDto>(vehicle)));
 		}
 
 		[HttpPost("[action]")]
 		public async Task<IActionResult> AddRange(List<VehicleDto> vehicleDtos)
 		{
 			var vehicles = await _service.AddRangeAsync(_mapper.Map<List<Vehicle>>(vehicleDtos));
-            return CreateActionResult(CustomResponseDto<List<VehicleDto>>.Success(_mapper.Map<List<VehicleDto>>(vehicles), 200));
+            return CreateActionResult(CustomResponseDto<List<VehicleDto>>.Success(200, _mapper.Map<List<VehicleDto>>(vehicles)));
         }
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
 			var vehicle = await _service.GetByIdAsync(id);
-			return CreateActionResult(CustomResponseDto<VehicleDto>.Success(_mapper.Map<VehicleDto>(vehicle), 200));
+			return CreateActionResult(CustomResponseDto<VehicleDto>.Success(200, _mapper.Map<VehicleDto>(vehicle)));
 		}
 
 		[HttpPut]
