@@ -9,7 +9,7 @@ namespace App.Repository.Seeds
 	{
 		public void Configure(EntityTypeBuilder<Vehicle> builder)
 		{
-			builder.HasData( new Vehicle { Id = new Guid(), Plate = "34 TR 321" });
+			builder.HasData( new Vehicle { Id = Guid.NewGuid(), Plate = "34 TR 321" });
 		}
 	}
 }

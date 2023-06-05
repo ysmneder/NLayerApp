@@ -9,10 +9,10 @@ namespace App.Repository.Seeds
 		public void Configure(EntityTypeBuilder<PackageStatus> builder)
 		{
 			builder.HasData(
-				new PackageStatus { Id = new Guid(), Status = "Created" ,Value = 1 },
-				new PackageStatus { Id = new Guid(), Status = "Loaded into Bag", Value = 2 },
-                new PackageStatus { Id = new Guid(), Status = "Loaded", Value = 3 },
-                new PackageStatus { Id = new Guid(), Status = "Unloaded", Value = 4 }
+				new PackageStatus { Id = Guid.NewGuid(), Status = "Created" ,Value = 1 },
+				new PackageStatus { Id = Guid.NewGuid(), Status = "Loaded into Bag", Value = 2 },
+                new PackageStatus { Id = Guid.NewGuid(), Status = "Loaded", Value = 3 },
+                new PackageStatus { Id = Guid.NewGuid(), Status = "Unloaded", Value = 4 }
                 );
 		}
 	}
