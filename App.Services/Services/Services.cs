@@ -4,6 +4,7 @@ using App.Core.Repositories;
 using App.Core.Services;
 using App.Core.UnitOfWork;
 using App.Repository.Repositories;
+using App.Services.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Service.Services
@@ -57,7 +58,15 @@ namespace App.Service.Services
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _repository.GetByIdAsync(id);
+            var hasId = await _repository.GetByIdAsync(id);
+
+            if (hasId == null)
+            {
+                throw new NotFoundException($"{typeof(T).Name}({id}) not found");
+            }
+
+            return hasId;
+            
         }
 
         public async Task Update(T entity)
