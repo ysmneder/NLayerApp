@@ -4,6 +4,7 @@ using App.Core.Services;
 using App.Core.Models;
 using App.Core.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using App.Api.Filter;
 
 namespace App.API.Controllers
 {
@@ -42,14 +43,16 @@ namespace App.API.Controllers
             return CreateActionResult(CustomResponseDto<List<DeliveryPointDto>>.Success(200, _mapper.Map<List<DeliveryPointDto>>(DeliveryPoints)));
         }
 
-		[HttpGet("{id}")]
+        [ServiceFilter(typeof(NotFoundFilter<DeliveryPoint>))]
+        [HttpGet("{id}")]
 		public async Task<IActionResult> GetById(Guid id)
 		{
 			var DeliveryPoint = await _service.GetByIdAsync(id);
 			return CreateActionResult(CustomResponseDto<DeliveryPointDto>.Success(200, _mapper.Map<DeliveryPointDto>(DeliveryPoint)));
 		}
 
-		[HttpPut]
+        [ServiceFilter(typeof(NotFoundFilter<DeliveryPoint>))]
+        [HttpPut]
 		public async Task<IActionResult> Update(Guid id)
 		{
 			var entity = await _service.GetByIdAsync(id);
@@ -57,6 +60,7 @@ namespace App.API.Controllers
 			return CreateActionResult(CustomResponseDto<NoContentDto>.Success(200));
 		}
 
+        [ServiceFilter(typeof(NotFoundFilter<DeliveryPoint>))]
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
