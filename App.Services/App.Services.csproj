@@ -9,10 +9,14 @@
   <ItemGroup>
     <None Remove="Mapping\" />
     <None Remove="Services\" />
+    <None Remove="Validations\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapping\" />
     <Folder Include="Services\" />
+    <Folder Include="Validations\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
@@ -27,5 +31,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
   </ItemGroup>
 </Project>
