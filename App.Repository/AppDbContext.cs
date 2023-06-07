@@ -19,7 +19,62 @@ namespace App.Repository
 		public DbSet<PackageStatus> PackageStatues;
 		public DbSet<BagStatus> BagStatues;
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+
+			foreach (var item in ChangeTracker.Entries())
+			{
+				if( item.Entity is BaseEntity entityReference)
+				{
+					switch (item.State)
+					{
+						case EntityState.Added:
+							{
+								entityReference.CreatedAt = DateTimeOffset.UtcNow;
+								break;
+							}
+						case EntityState.Modified:
+							{
+                                Entry(entityReference).Property(x => x.CreatedAt).IsModified = false;
+                                entityReference.UpdatedAt = DateTimeOffset.UtcNow;
+								break;
+							}
+						
+					}
+				}
+			} 
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override int SaveChanges()
+        {
+            foreach (var item in ChangeTracker.Entries())
+            {
+                if (item.Entity is BaseEntity entityReference)
+                {
+                    switch (item.State)
+                    {
+                        case EntityState.Added:
+                            {
+                                entityReference.CreatedAt = DateTimeOffset.UtcNow;
+                                break;
+                            }
+                        case EntityState.Modified:
+                            {
+								Entry(entityReference).Property(x => x.CreatedAt).IsModified = false;
+                                entityReference.UpdatedAt = DateTimeOffset.UtcNow;
+                                break;
+                            }
+
+                    }
+                }
+            }
+            return base.SaveChanges();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
