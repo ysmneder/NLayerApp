@@ -51,12 +51,11 @@ namespace App.API.Controllers
 			return CreateActionResult(CustomResponseDto<VehicleDto>.Success(200, _mapper.Map<VehicleDto>(vehicle)));
 		}
 
-        [ServiceFilter(typeof(NotFoundFilter<Vehicle>))]
         [HttpPut]
-		public async Task<IActionResult> Update(Guid id)
+		public async Task<IActionResult> Update(VehicleDto vehicleDto)
 		{
-			var entity = await _service.GetByIdAsync(id);
-			await _service.Update(entity);
+			var vehicle = _mapper.Map<Vehicle>(vehicleDto);
+			await _service.Update(vehicle);
 			return CreateActionResult(CustomResponseDto<NoContentDto>.Success(200));
 		}
 

@@ -51,12 +51,10 @@ namespace App.API.Controllers
 			return CreateActionResult(CustomResponseDto<PackageDto>.Success(200,_mapper.Map<PackageDto>(Package)));
 		}
 
-        [ServiceFilter(typeof(NotFoundFilter<Package>))]
         [HttpPut]
-		public async Task<IActionResult> Update(Guid id)
+		public async Task<IActionResult> Update(PackageDto packageDto)
 		{
-			var entity = await _service.GetByIdAsync(id);
-			await _service.Update(entity);
+			await _service.Update(_mapper.Map<Package>(packageDto));
 			return CreateActionResult(CustomResponseDto<NoContentDto>.Success(200));
 		}
 
