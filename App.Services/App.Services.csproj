@@ -33,4 +33,7 @@
     </PackageReference>
     <PackageReference Include="FluentValidation" Version="11.5.2" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" />
+  </ItemGroup>
 </Project>
