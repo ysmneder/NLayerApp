@@ -60,13 +60,7 @@ namespace App.Service.Services
         {
             var hasId = await _repository.GetByIdAsync(id);
 
-            if (hasId == null)
-            {
-                throw new NotFoundException($"{typeof(T).Name}({id}) not found");
-            }
-
-            return hasId;
-            
+            return hasId == null ? throw new NotFoundException($"{typeof(T).Name}({id}) not found") : hasId;
         }
 
         public async Task Update(T entity)
