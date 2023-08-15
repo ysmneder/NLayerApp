@@ -2,7 +2,6 @@
 using AutoMapper;
 using App.Core.Models;
 using App.Core.Dtos;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace App.Service.Mapping
 {
