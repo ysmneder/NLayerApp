@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,15 +18,14 @@ namespace App.Repository.Migrations
                 name: "BagStatus",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Status = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Value = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BagStatus", x => x.Id);
+                    table.PrimaryKey("PK_BagStatus", x => x.Value);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,15 +47,14 @@ namespace App.Repository.Migrations
                 name: "PackageStatus",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Status = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Value = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PackageStatus", x => x.Id);
+                    table.PrimaryKey("PK_PackageStatus", x => x.Value);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,11 +76,11 @@ namespace App.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BagStatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BagStatusId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     VolumetricWeight = table.Column<decimal>(type: "numeric", nullable: false),
-                    DeliveryPointUnloading = table.Column<int>(type: "integer", nullable: false),
+                    DeliveryPointId = table.Column<Guid>(type: "uuid", nullable: false),
                     Barcode = table.Column<string>(type: "text", nullable: false),
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -92,6 +91,12 @@ namespace App.Repository.Migrations
                         name: "FK_Bag_BagStatus_BagStatusId",
                         column: x => x.BagStatusId,
                         principalTable: "BagStatus",
+                        principalColumn: "Value",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bag_DeliveryPoint_DeliveryPointId",
+                        column: x => x.DeliveryPointId,
+                        principalTable: "DeliveryPoint",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -108,11 +113,11 @@ namespace App.Repository.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AssignedBagBarcode = table.Column<string>(type: "text", nullable: true),
-                    PackageStatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PackageStatusId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     VolumetricWeight = table.Column<decimal>(type: "numeric", nullable: false),
-                    DeliveryPointUnloading = table.Column<int>(type: "integer", nullable: false),
+                    DeliveryPointId = table.Column<Guid>(type: "uuid", nullable: false),
                     Barcode = table.Column<string>(type: "text", nullable: false),
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -120,10 +125,16 @@ namespace App.Repository.Migrations
                 {
                     table.PrimaryKey("PK_Package", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Package_DeliveryPoint_DeliveryPointId",
+                        column: x => x.DeliveryPointId,
+                        principalTable: "DeliveryPoint",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Package_PackageStatus_PackageStatusId",
                         column: x => x.PackageStatusId,
                         principalTable: "PackageStatus",
-                        principalColumn: "Id",
+                        principalColumn: "Value",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Package_Vehicle_VehicleId",
@@ -135,12 +146,12 @@ namespace App.Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "BagStatus",
-                columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt", "Value" },
+                columns: new[] { "Value", "CreatedAt", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("6670922e-2851-4f86-b3b8-b3964604bfe6"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Loaded", null, 2 },
-                    { new Guid("7d8b40c3-7b56-43ff-9622-bde61387581b"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Unloaded", null, 3 },
-                    { new Guid("ab548350-9319-47c3-9bd0-867d28f17f80"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Created", null, 1 }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Created" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Loaded" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Unloaded" }
                 });
 
             migrationBuilder.InsertData(
@@ -148,26 +159,26 @@ namespace App.Repository.Migrations
                 columns: new[] { "Id", "CreatedAt", "DeliveryPointName", "UpdatedAt", "Value" },
                 values: new object[,]
                 {
-                    { new Guid("62a6d8a2-15f2-4f0f-a36b-728bc2a884b9"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Transfer Center", null, 3 },
-                    { new Guid("791ef4b8-76bc-4c7b-8b6f-55d7c3f5f95e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Branch", null, 1 },
-                    { new Guid("972fea7b-e073-4247-9ba5-c5d6c2569e8d"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Distribution Center", null, 2 }
+                    { new Guid("6bd7c1c8-66be-455d-813f-a7645e1e913a"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Distribution Center", null, 2 },
+                    { new Guid("7b00c998-a15e-400d-8ead-c98fafbb5059"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Transfer Center", null, 3 },
+                    { new Guid("80f4362b-f32f-46d5-bf10-84c23beed4c7"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Branch", null, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "PackageStatus",
-                columns: new[] { "Id", "CreatedAt", "Status", "UpdatedAt", "Value" },
+                columns: new[] { "Value", "CreatedAt", "Status" },
                 values: new object[,]
                 {
-                    { new Guid("4ee3b7bb-adef-41be-b6a4-82bc06aa0887"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Created", null, 1 },
-                    { new Guid("5d0b2feb-cabc-47ea-a8ed-157a99ab3ede"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Loaded", null, 3 },
-                    { new Guid("63287bf8-9720-441b-b683-8c634f90a5e3"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Loaded into Bag", null, 2 },
-                    { new Guid("c87d70b4-a3d7-4023-9e78-a4efdc01156e"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Unloaded", null, 4 }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Created" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Loaded into Bag" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Loaded" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Unloaded" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Vehicle",
                 columns: new[] { "Id", "CreatedAt", "Plate", "UpdatedAt" },
-                values: new object[] { new Guid("266243eb-45ec-4503-ba28-37e73327e9b1"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "34 TR 321", null });
+                values: new object[] { new Guid("8e91f1cb-7618-4be1-aa0e-35610bceac96"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "34 TR 321", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bag_BagStatusId",
@@ -175,9 +186,19 @@ namespace App.Repository.Migrations
                 column: "BagStatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bag_DeliveryPointId",
+                table: "Bag",
+                column: "DeliveryPointId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bag_VehicleId",
                 table: "Bag",
                 column: "VehicleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Package_DeliveryPointId",
+                table: "Package",
+                column: "DeliveryPointId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Package_PackageStatusId",
@@ -197,13 +218,13 @@ namespace App.Repository.Migrations
                 name: "Bag");
 
             migrationBuilder.DropTable(
-                name: "DeliveryPoint");
-
-            migrationBuilder.DropTable(
                 name: "Package");
 
             migrationBuilder.DropTable(
                 name: "BagStatus");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryPoint");
 
             migrationBuilder.DropTable(
                 name: "PackageStatus");

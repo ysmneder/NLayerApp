@@ -8,7 +8,7 @@ namespace App.Repository.Configurations
 	{
 		public void Configure(EntityTypeBuilder<BagStatus> builder)
 		{
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Value);
             builder.Property(x => x.Status).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Value).IsRequired();
         }

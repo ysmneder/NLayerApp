@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace App.Core.Models
 {
-	public class PackageStatus : BaseEntity
+	public class PackageStatus 
     {
-        public string Status { get; set; }
         public int Value { get; set; }
+        public string Status { get; set; }
+        public DateTime CreatedAt { get; set; }
 
     }
 }

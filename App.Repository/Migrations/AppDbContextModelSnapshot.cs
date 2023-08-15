@@ -28,8 +28,8 @@ namespace App.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BagStatusId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("BagStatusId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Barcode")
                         .IsRequired()
@@ -63,11 +63,13 @@ namespace App.Repository.Migrations
 
             modelBuilder.Entity("App.Core.Models.BagStatus", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Value")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Value"));
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -75,37 +77,28 @@ namespace App.Repository.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
+                    b.HasKey("Value");
 
                     b.ToTable("BagStatus");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8457e93b-0383-42d6-86a3-e2fc96476d59"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Created",
-                            Value = 1
+                            Value = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Created"
                         },
                         new
                         {
-                            Id = new Guid("797f1aee-89d0-475d-bb60-f68e399eda93"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Loaded",
-                            Value = 2
+                            Value = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Loaded"
                         },
                         new
                         {
-                            Id = new Guid("5c9d1ec5-0f69-46aa-9245-52d2c5ec7d8e"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Unloaded",
-                            Value = 3
+                            Value = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Unloaded"
                         });
                 });
 
@@ -136,21 +129,21 @@ namespace App.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("90f205d0-ac7e-44f0-b495-0a80edfbe3a1"),
+                            Id = new Guid("e06fc491-0f44-4404-a200-8da36c29ef60"),
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DeliveryPointName = "Branch",
                             Value = 1
                         },
                         new
                         {
-                            Id = new Guid("6585ed77-e248-4269-bea4-1919a1cdb498"),
+                            Id = new Guid("67468fcc-5501-4f59-87c4-21ef9e7be666"),
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DeliveryPointName = "Distribution Center",
                             Value = 2
                         },
                         new
                         {
-                            Id = new Guid("cc95ffec-932f-4ce2-ad6a-556e76a99f11"),
+                            Id = new Guid("9a170367-8cb6-4a6d-b5b5-7dabaeff4429"),
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DeliveryPointName = "Transfer Center",
                             Value = 3
@@ -176,8 +169,8 @@ namespace App.Repository.Migrations
                     b.Property<Guid>("DeliveryPointId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PackageStatusId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PackageStatusId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -201,11 +194,13 @@ namespace App.Repository.Migrations
 
             modelBuilder.Entity("App.Core.Models.PackageStatus", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Value")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Value"));
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
@@ -213,44 +208,34 @@ namespace App.Repository.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
+                    b.HasKey("Value");
 
                     b.ToTable("PackageStatus");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3b1941d8-20b6-4185-b4b2-35163c3aa5b1"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Created",
-                            Value = 1
+                            Value = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Created"
                         },
                         new
                         {
-                            Id = new Guid("6c34937a-32b6-4baa-a387-2d914c98c943"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Loaded into Bag",
-                            Value = 2
+                            Value = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Loaded into Bag"
                         },
                         new
                         {
-                            Id = new Guid("ddd56514-9170-4349-9c39-6259fd45a5df"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Loaded",
-                            Value = 3
+                            Value = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Loaded"
                         },
                         new
                         {
-                            Id = new Guid("bef3d5de-ee47-4ae4-b4c3-4bd789e95859"),
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            Status = "Unloaded",
-                            Value = 4
+                            Value = 4,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "Unloaded"
                         });
                 });
 
@@ -278,7 +263,7 @@ namespace App.Repository.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1bca34a6-dfcc-451d-a1b8-8b2a9bafaf43"),
+                            Id = new Guid("949234b5-ebf8-4428-a9b7-b0576bb78d6c"),
                             CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Plate = "34 TR 321"
                         });
